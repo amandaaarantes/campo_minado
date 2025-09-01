@@ -1,4 +1,4 @@
-type Square = {
+export type SquareType = { // tá em SquareType
 	row: number,
 	column: number,
 	state: string, //Pode ser: closed, opened, flagged
@@ -6,7 +6,7 @@ type Square = {
 	nearMines: number, //Número de minas em volta
 }
 
-const modeloSquare : Square = {
+export const modeloSquareType : SquareType = {
     row : 0,
     column : 0,
     state : "closed",
@@ -14,28 +14,28 @@ const modeloSquare : Square = {
     nearMines: 0,
 }
  
-function retornaMatriz(numLinhas : number, numColunas : number) : Square[][] {
-    let matSquares : Square[][] = [];
+export function retornaMatriz(numLinhas : number, numColunas : number) : SquareType[][] {
+    let matSquareTypes : SquareType[][] = [];
 
     for(let i = 0; i < numLinhas; i++){
-        matSquares[i] = [];
+        matSquareTypes[i] = [];
         for(let j = 0; j < numColunas; j++){
-            matSquares[i][j] = {
-                ...modeloSquare,
+            matSquareTypes[i][j] = {
+                ...modeloSquareType,
                 row : i,
                 column : j,
                 };
         }
     }
-    return matSquares;
+    return matSquareTypes;
 }
 
-function sorteiaMinas(matriz: Square[][], quantMinas : number) : void{
+export function sorteiaMinas(matriz: SquareType[][], quantMinas : number) : void{
     let quantAtualMinas = 0;
     while(quantAtualMinas < quantMinas){
         
-        let linhaSorteada : number = (Math.random() * matriz.length);
-        let colunaSorteada : number = (Math.random() * matriz[0].length);
+        let linhaSorteada : number = Math.floor(Math.random() * matriz.length);
+        let colunaSorteada : number = Math.floor(Math.random() * matriz[0].length);
         if(!matriz[linhaSorteada][colunaSorteada].hasMine){
             matriz[linhaSorteada][colunaSorteada].hasMine = true;
             quantAtualMinas++;
@@ -45,7 +45,7 @@ function sorteiaMinas(matriz: Square[][], quantMinas : number) : void{
     
 }
 
-function minasAdjacentes(matriz : Square[][], nLinha : number, nColuna: number) : void{
+export function minasAdjacentes(matriz : SquareType[][], nLinha : number, nColuna: number) : void{
     let cont = 0;
     for(let i = -1; i <= 1; i++){
         for(let j = -1; j <= 1; j++){
@@ -66,7 +66,7 @@ function minasAdjacentes(matriz : Square[][], nLinha : number, nColuna: number) 
     
     }
 
-    function contarBombas(matriz : Square[][]) : void{
+   export function contarBombas(matriz : SquareType[][]) : void{
         for(let i = 0; i < matriz.length; i++){
             for(let j = 0; j < matriz[0].length; j++){
                 minasAdjacentes(matriz, i, j);
@@ -74,7 +74,7 @@ function minasAdjacentes(matriz : Square[][], nLinha : number, nColuna: number) 
         }
     }
 
-    function imprimirMatriz(matriz : Square[][]) : void { // resolver: console pula linha
+   export function imprimirMatriz(matriz : SquareType[][]) : void { // resolver: console pula linha
         
         for(let i = 0; i < matriz.length; i++){
             let textoLinha = " ";
@@ -96,9 +96,9 @@ function minasAdjacentes(matriz : Square[][], nLinha : number, nColuna: number) 
     }
 
 
-    const campoMinado : Square[][] = retornaMatriz(3,3);
+    const campoMinado : SquareType[][] = retornaMatriz(3,3);
 
-    const gabaritoCampoMinado : Square[][] = JSON.parse(JSON.stringify(campoMinado));
+    const gabaritoCampoMinado : SquareType[][] = JSON.parse(JSON.stringify(campoMinado));
 
 
     sorteiaMinas(gabaritoCampoMinado, 4);
