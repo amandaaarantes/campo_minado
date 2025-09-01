@@ -33,36 +33,41 @@ const Home: React.FC = () => {
     setFlagsCount(MINES);
   };
 
-  const revealSquares = useCallback((boardCopy: SquareType[][], row: number, col: number) => {
-    if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
-    const square = boardCopy[row][col];
-    if (square.state !== 'closed') return;
+  const revealSquares = useCallback((boarcolunasVizinhasopy: SquareType[][], row: number, col: number) => {
+
+    if (row < 0 || row >= ROWS || col < 0 || col >= COLS)return; // verifica limites do tabuleiro
+
+    const square = boarcolunasVizinhasopy[row][col];
+
+    if (square.state !== 'closed') return; // verifica se o square já está aberto
+
     square.state = 'opened';
+
     if (square.nearMines === 0 && !square.hasMine) { 
-      for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
-        if (dr !== 0 || dc !== 0) revealSquares(boardCopy, row + dr, col + dc);
+      for (let linhasVizinhas = -1; linhasVizinhas <= 1; linhasVizinhas++) for (let colunasVizinhas = -1; colunasVizinhas <= 1; colunasVizinhas++) {
+        if (linhasVizinhas !== 0 || colunasVizinhas !== 0) revealSquares(boarcolunasVizinhasopy, row + linhasVizinhas, col + colunasVizinhas);
       }
     }
   }, []);
 
   const handleSquareClick = (square: SquareType) => {
     if (gameStatus !== 'playing' || square.state !== 'closed') return;
-    const boardCopy = JSON.parse(JSON.stringify(board));
+    const boarcolunasVizinhasopy = JSON.parse(JSON.stringify(board));
     if (square.hasMine) {
       setGameStatus('lost');
-      boardCopy.flat().forEach((sq: SquareType) => { if (sq.hasMine) sq.state = 'opened'; });
-      setBoard(boardCopy);
+      boarcolunasVizinhasopy.flat().forEach((sq: SquareType) => { if (sq.hasMine) sq.state = 'opened'; });
+      setBoard(boarcolunasVizinhasopy);
       return;
     }
-    revealSquares(boardCopy, square.row, square.column);
-    setBoard(boardCopy);
+    revealSquares(boarcolunasVizinhasopy, square.row, square.column);
+    setBoard(boarcolunasVizinhasopy);
   };
   
   const handleContextMenu = (e: React.MouseEvent, square: SquareType) => {
     e.preventDefault();
     if (gameStatus !== 'playing' || square.state === 'opened') return;
-    const boardCopy = JSON.parse(JSON.stringify(board));
-    const clickedSquare = boardCopy[square.row][square.column];
+    const boarcolunasVizinhasopy = JSON.parse(JSON.stringify(board));
+    const clickedSquare = boarcolunasVizinhasopy[square.row][square.column];
     if (clickedSquare.state === 'closed' && flagsCount > 0) {
       clickedSquare.state = 'flagged';
       setFlagsCount(flagsCount - 1);
@@ -70,7 +75,7 @@ const Home: React.FC = () => {
       clickedSquare.state = 'closed';
       setFlagsCount(flagsCount + 1);
     }
-    setBoard(boardCopy);
+    setBoard(boarcolunasVizinhasopy);
   };
 
   const checkWinCondition = useCallback(() => {

@@ -1,5 +1,8 @@
 import React from 'react';
 import flagIm from './bandeira.png';
+import smileIm from './sorrindo.png';
+import glassIm from './oculos.png';
+import deadIm from './morreu.png'
 
 type GameStatus = 'playing' | 'won' | 'lost';
 
@@ -10,6 +13,19 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ flagsCount, gameStatus, onRestart }) => {
+
+  let imagem;
+
+  if (gameStatus === 'playing') {
+    imagem = smileIm;
+  } else if (gameStatus === 'won') {
+    imagem = glassIm;
+  } else {
+    imagem = deadIm;
+  }
+
+
+
   return (
     <div className="
     flex 
@@ -28,14 +44,12 @@ const Header: React.FC<HeaderProps> = ({ flagsCount, gameStatus, onRestart }) =>
       gap-1 
       font-bold 
       font-mono">
-        <img src={flagIm} alt="bandeira" className="w-full h-full" />
+        <img src={flagIm} alt="bandeira" className="w-7 h-full" />
         <span>{String(flagsCount).padStart(3, '0')}</span>
       </div>
       
-      <button onClick={onRestart} className="text-2xl">
-        {gameStatus === 'playing' && '🙂'}
-        {gameStatus === 'won' && '😎'}
-        {gameStatus === 'lost' && '😵'}
+      <button onClick={onRestart} className="text-4x1">
+        <img src={imagem} alt="carinha" className=' w-7 h-full'/>
       </button>
 
     </div>
